@@ -28,19 +28,19 @@ pipeline {
         stage('login to dockerhub') {
             steps {
                 echo 'login to dockerhub'
-                sh 'docker login -u vnom1985 -p abc@12345'
+                sh 'docker login -u manjunathr03 -p Manja@8971'
             }
         } 
         stage('Tag the Image') {
             steps {
                 echo 'Tag the Image'
-                sh 'docker tag  projectd vnom1985/projectd'
+                sh 'docker tag  projectd manjunathr/projectd'
             }
         } 
         stage('Deploy to docker hub') {
             steps {
                 echo 'Deploy to docker hub'
-                sh 'docker push vnom1985/projectd'
+                sh 'docker push manjunathr/projectd'
             }
         }
         stage('Remove Docker conatiner') {
@@ -53,13 +53,8 @@ pipeline {
         stage('Run docker image') {
             steps {
                 echo 'Deploy to docker hub'
-                sh 'docker run --name projectd_conatiner -d -p 8181:8080 vnom1985/projectd'
+                sh 'docker run --name projectd_conatiner -d -p 9090:8080 manjunathr/projectd'
             }
-        }
-        stage('added one more stage') {
-            steps {
-                echo 'added one more stage'                
-            }
-        }        
+        }       
     }
 }
