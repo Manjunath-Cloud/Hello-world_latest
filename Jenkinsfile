@@ -1,5 +1,5 @@
 pipeline {
-    agent { label "agentA" }
+    agent { label "Slave_1" }
     
     triggers {
         pollSCM('* * * * *')
@@ -9,20 +9,20 @@ pipeline {
         stage('clone_project_A') {
             steps {
                 echo 'clone project A'
-                git 'https://github.com/vincloud2/Helloworld-latest.git'
+                git branch: 'main', url: 'https://github.com/Manjunath-Cloud/Hello-world_latest.git'
             }
         }
         stage('build_project_A') {
             steps {
                 echo 'build_projectA'
                 sh 'yum install maven -y'
-                sh 'mvn -Dmaven.test.failure.ignore=true install'
+                sh 'mvn clean package'
             }
         } 
         stage('Docker_build') {
             steps {
-                echo 'Docker build_projectd'
-                sh 'docker build -t projectd .' 
+                echo 'Docker build_project03'
+                sh 'docker build -t project03 .' 
             }
         }
         stage('login to dockerhub') {
@@ -34,13 +34,13 @@ pipeline {
         stage('Tag the Image') {
             steps {
                 echo 'Tag the Image'
-                sh 'docker tag  projectd manjunathr/projectd'
+                sh 'docker tag  project03 manjunathr03/project03'
             }
         } 
         stage('Deploy to docker hub') {
             steps {
                 echo 'Deploy to docker hub'
-                sh 'docker push manjunathr/projectd'
+                sh 'docker push manjunathr03/project03'
             }
         }
         stage('Remove Docker conatiner') {
@@ -53,7 +53,7 @@ pipeline {
         stage('Run docker image') {
             steps {
                 echo 'Deploy to docker hub'
-                sh 'docker run --name projectd_conatiner -d -p 9090:8080 manjunathr/projectd'
+                sh 'docker run --name project03_conatiner -d -p 9090:8080 manjunathr/project03'
             }
         }       
     }
